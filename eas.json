@@ -1,0 +1,59 @@
+{
+    "cli": {
+        "version": ">= 2.6.0",
+        "appVersionSource": "remote"
+    },
+    "build": {
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal",
+            "env": {
+                "APP_VARIANT": "development"
+            }
+        },
+        "development-simulator": {
+            "extends": "development",
+            "ios": {
+                "simulator": true
+            }
+        },
+        "staging": {
+            "android": {
+                "distribution": "internal",
+                "buildType": "apk"
+            },
+            "releaseChannel": "staging",
+            "autoIncrement": true,
+            "env": {
+                "APP_VARIANT": "staging"
+            }
+        },
+        "production": {
+            "releaseChannel": "production",
+            "autoIncrement": true,
+            "env": {
+                "APP_VARIANT": "production"
+            }
+        }
+    },
+    "submit": {
+        "staging": {
+            "android": {
+                "serviceAccountKeyPath": "android-service-account-key.json",
+                "track": "internal"
+            },
+            "ios": {
+                "appleId": "apple_id",
+                "ascAppId": "asc_app_id",
+                "sku": "sku",
+                "appleTeamId": "apple_team_id",
+                "language": "jp",
+                "companyName": "company_name",
+                "ascApiKeyPath": "app-store-connect-api-key.p8",
+                "ascApiKeyIssuerId": "asc_api_key_issuer_id",
+                "ascApiKeyId": "asc_api_key_id"
+            }
+        },
+        "production": {}
+    }
+}

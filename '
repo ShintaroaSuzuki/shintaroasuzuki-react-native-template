@@ -22,9 +22,7 @@ gh repo create my-new-repo \
 ```
 
 > **Note**
->
 > 事前に [GitHub CLI](https://docs.github.com/ja/github-cli/github-cli) のインストールが必要です。
->
 > [Homebrew](https://brew.sh) を使っていれば下記のコマンドでインストールできます。
 >
 > ```shell
@@ -55,9 +53,7 @@ yarn install
 ```
 
 > **Note**
->
 > 事前に [GitHub CLI](https://docs.github.com/ja/github-cli/github-cli) のインストールが必要です。
->
 > [Homebrew](https://brew.sh) を使っていれば下記のコマンドでインストールできます。
 >
 > ```shell
@@ -72,12 +68,23 @@ yarn install
 
 使用しているライブラリの中から、抜粋して説明します。
 
-|                                                                                     |                                                                                                                                                                  |
-| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [React Query](https://tanstack.com/query/v4/docs/react/overview)                    | DFL(Data Fetching Library) の一つです。Server State を簡潔に管理し、キャッシュ機構を利用するため使用しています。                                                 |
-| [Aspida](https://github.com/aspida/aspida/tree/main/packages/aspida/docs/ja#readme) | TypeScript 製の REST API クライアントです。パス・URL クエリ・ヘッダー・ボディ・レスポンス全てに型を指定できるため、REST API でより型安全な開発が可能になります。 |
-| [Recoil](https://recoiljs.org)                                                      | React のための状態管理ライブラリです。Global State を管理するために使用しています。                                                                              |
-| [React Native MMKV](https://github.com/mrousavy/react-native-mmkv)                  | ローカルストレージにデータを保存するために使用しています。Async Storage よりもパフォーマンスが高いためこちらを使用しています。                                   |
+### [React Query](https://tanstack.com/query/v4/docs/react/overview)
+
+DFL(Data Fetching Library) の一つです。Server State を簡潔に管理し、キャッシュ機構を利用するため使用しています。
+
+### [Aspida](https://github.com/aspida/aspida/tree/main/packages/aspida/docs/ja#readme)
+
+TypeScript 製の REST API クライアントです。パス・URL クエリ・ヘッダー・ボディ・レスポンス全てに型を指定できるため、REST API でより型安全な開発が可能になります。
+
+### [Recoil](https://recoiljs.org)
+
+React のための状態管理ライブラリです。Global State を管理するために使用しています。
+
+### [React Native MMKV](https://github.com/mrousavy/react-native-mmkv)
+
+ローカルストレージにデータを保存するために使用しています。
+
+Async Storage よりもパフォーマンスが高いためこちらを使用しています。
 
 <h2 id="directory-design">ディレクトリ設計</h2>
 
@@ -112,18 +119,18 @@ yarn install
 
 master, staging, production という 3 つのブランチを立てています。
 
-1. **ローカルでのコミット**
+1. ローカルでのコミット
 
 -   Prettier でフォーマット
 -   ESLint で構文チェック
 -   prh で表記ゆれチェック
 
-2. **Pull Request の作成**
+2. Pull Request の作成
 
 -   Jest で単体テスト
 -   PR のコメントにカバレッジレポートを作成
 
-3. **Pull Request のマージ**
+3. Pull Request のマージ
 
 > master ブランチへのマージ
 
@@ -136,20 +143,28 @@ master, staging, production という 3 つのブランチを立てています�
 
 <h2 id="script">スクリプト</h2>
 
-|                         |                                                     |
-| ----------------------- | --------------------------------------------------- |
-| `yarn dev:start`        | Dev サーバーの起動                                  |
-| `yarn dev:ios`          | Dev サーバーの起動 & iOS simulator の起動           |
-| `yarn dev:android`      | Dev サーバーの起動 & Android Simulator の起動       |
-| `yarn api:build`        | OpenAPI から ApiClient を生成                       |
-| `yarn mock:build`       | OpenAPI から axiosMock のための json ファイルを生成 |
-| `yarn submodule:update` | サブモジュールのアップデート                        |
-
 <h2 id="generate-boilerplate">ボイラープレートの生成</h2>
 
-|                             |                  |
-| --------------------------- | ---------------- |
-| `yarn hygen new components` | Component の生成 |
-| `yarn hygen new screens`    | Screen の生成    |
-| `yarn hygen new logics`     | logic の生成     |
-| `yarn hygen new utils`      | util の生成      |
+### Component の生成
+
+```shell
+yarn hygen new components
+```
+
+### Screen の生成
+
+```shell
+yarn hygen new screens
+```
+
+### logic の生成
+
+```shell
+yarn hygen new logics
+```
+
+### util の生成
+
+```shell
+yarn hygen new utils
+```

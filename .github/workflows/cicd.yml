@@ -1,0 +1,152 @@
+name: CI/CD
+on:
+    push:
+        branches:
+            - 'master'
+            - 'staging'
+            - 'production'
+    pull_request:
+        types:
+            - 'ready_for_review'
+        branches:
+            - 'master'
+            - 'staging'
+            - 'production'
+jobs:
+    test:
+        name: Execute React Test
+        if: ${{ github.event_name == 'pull_request' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: github app access token
+              id: get-github-app
+              uses: getsentry/action-github-app-token@v2
+              with:
+                  app_id: ${{ secrets.TOKEN_GENERATOR_APP_ID }}
+                  private_key: ${{ secrets.TOKEN_GENERATOR_PRIVATE_KEY}}
+
+            - name: Checkout branch
+              uses: actions/checkout@v3
+              with:
+                  submodules: recursive
+                  token: ${{ steps.get-github-app.outputs.token }}
+
+            - name: Setup Environment
+              uses: ./.github/actions/setup-env
+
+            - name: Execute jest
+              run: |
+                  yarn jest --coverage --colors
+
+            - name: Jest coverage comment
+              if: always()
+              uses: MishaKav/jest-coverage-comment@main
+              with:
+                  coverage-summary-path: ./coverage/coverage-summary.json
+                  coverage-path: ./coverage/coverage.txt
+
+            - name: Notify to Slack
+              if: always()
+              uses: ./.github/actions/notify-slack
+              with:
+                  job_name: Execute React Test
+                  status: ${{ job.status }}
+                  title: ricepotplus app jest結果
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    deploy:
+        name: Build & Deploy
+        if: ${{ ! failure() && !(github.base_ref == 'master') }}
+        needs: Test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout branch
+              uses: actions/checkout@v3
+
+            - name: Setup Environment
+              uses: ./.github/actions/setup-env
+
+            - name: Set env to dev
+              if: ${{ github.ref == 'refs/heads/master' }}
+              run: |
+                  echo "API_URL=${{ secrets.API_URL_DEV }}" >> $GITHUB_ENV
+                  echo "APP_VARIANT=development" >> $GITHUB_ENV
+
+            - name: Set env to stg
+              if: ${{ github.base_ref == 'staging' || github.ref == 'refs/heads/staging' }}
+              run: |
+                  echo "API_URL=${{ secrets.API_URL_STG }}" >> $GITHUB_ENV
+                  echo "APP_VARIANT=staging" >> $GITHUB_ENV
+
+            - name: Set env to prd
+              if: ${{ github.base_ref == 'production' || github.ref == 'refs/heads/production' }}
+              run: |
+                  echo "API_URL=${{ secrets.API_URL_PRD }}" >> $GITHUB_ENV
+                  echo "APP_VARIANT=production" >> $GITHUB_ENV
+
+            - name: Setup Expo
+              uses: expo/expo-github-action@v8
+              with:
+                  expo-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: EAS Update for Dev
+              if: ${{ github.ref == 'refs/heads/master' }}
+              run: npx eas-cli update --non-interactive --auto
+
+            - name: Generate token for app
+              id: generate_token
+              if: ${{ github.base_ref == 'staging' || github.base_ref == 'production' }}
+              uses: jnwng/github-app-installation-token-action@master
+              with:
+                  appId: ${{ secrets.SVS_APP_ID }}
+                  installationId: ${{ secrets.SVS_INSTALLATION_ID }}
+                  privateKey: ${{ secrets.SVS_APP_PEM }}
+
+            - name: Create empty check-run for android
+              if: ${{ github.base_ref == 'staging' || github.base_ref == 'production' }}
+              uses: LouisBrunner/checks-action@v1.1.1
+              with:
+                  token: ${{ steps.generate_token.outputs.token }}
+                  name: Build for android on EAS
+                  status: queued
+
+            - name: Create empty check-run for ios
+              if: ${{ github.base_ref == 'staging' || github.base_ref == 'production' }}
+              uses: LouisBrunner/checks-action@v1.1.1
+              with:
+                  token: ${{ steps.generate_token.outputs.token }}
+                  name: Build for ios on EAS
+                  status: queued
+
+            - name: Build for Stg or Prd
+              if: ${{ github.base_ref == 'staging' || github.base_ref == 'production' }}
+              run: |
+                  npx eas-cli build \
+                    --platform all \
+                    --non-interactive \
+                    --no-wait \
+                    --profile ${{ env.APP_VARIANT }}
+
+            - name: Submit for Stg or Prd
+              if: ${{ github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/production' }}
+              run: |
+                  echo ${{ secrets.ANDROID_SERVICE_ACCOUNT_KEY_BASE64 }} | base64 -d > android-service-account-key.json
+                  echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 -d > app-store-connect-api-key.p8
+                  npx eas-cli submit \
+                    --latest \
+                    --platform all \
+                    --non-interactive \
+                    --no-wait \
+                    --profile ${{ env.APP_VARIANT }}
+
+            - name: Notify to Slack
+              if: always()
+              uses: ./.github/actions/notify-slack
+              with:
+                  job_name: Build & Deploy
+                  status: ${{ job.status }}
+                  title: ricepotplus app build&deploy結果
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
