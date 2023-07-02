@@ -74,10 +74,10 @@ yarn install
 
 |                                                                                     |                                                                                                                                                                  |
 | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [React Query](https://tanstack.com/query/v4/docs/react/overview)                    | DFL(Data Fetching Library) の一つです。Server State を簡潔に管理し、キャッシュ機構を利用するため使用しています。                                                 |
-| [Aspida](https://github.com/aspida/aspida/tree/main/packages/aspida/docs/ja#readme) | TypeScript 製の REST API クライアントです。パス・URL クエリ・ヘッダー・ボディ・レスポンス全てに型を指定できるため、REST API でより型安全な開発が可能になります。 |
-| [Recoil](https://recoiljs.org)                                                      | React のための状態管理ライブラリです。Global State を管理するために使用しています。                                                                              |
-| [React Native MMKV](https://github.com/mrousavy/react-native-mmkv)                  | ローカルストレージにデータを保存するために使用しています。Async Storage よりもパフォーマンスが高いためこちらを使用しています。                                   |
+| [react-query](https://tanstack.com/query/v4/docs/react/overview)                    | DFL(Data Fetching Library) の一つです。Server State を簡潔に管理し、キャッシュ機構を利用するため使用しています。                                                 |
+| [aspida](https://github.com/aspida/aspida/tree/main/packages/aspida/docs/ja#readme) | TypeScript 製の REST API クライアントです。パス・URL クエリ・ヘッダー・ボディ・レスポンス全てに型を指定できるため、REST API でより型安全な開発が可能になります。 |
+| [recoil](https://recoiljs.org)                                                      | React のための状態管理ライブラリです。Global State を管理するために使用しています。                                                                              |
+| [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv)                  | ローカルストレージにデータを保存するために使用しています。Async Storage よりもパフォーマンスが高いためこちらを使用しています。                                   |
 
 <h2 id="directory-design">ディレクトリ設計</h2>
 
