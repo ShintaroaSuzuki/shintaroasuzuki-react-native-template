@@ -11,6 +11,7 @@
 -   [CI/CD](#cicd)
 -   [スクリプト](#script)
 -   [ボイラープレートの生成](#generate-boilerplate)
+-   [DevClient の利用](#devclient)
 
 <h2 id="use-template-repository">テンプレートリポジトリの利用</h2>
 
@@ -153,3 +154,15 @@ master, staging, production という 3 つのブランチを立てています�
 | `yarn hygen new screens`    | Screen の生成    |
 | `yarn hygen new logics`     | logic の生成     |
 | `yarn hygen new utils`      | util の生成      |
+
+<h2 id="devclient">DevClient の利用</h2>
+
+GitHub Actions の手動ワークフローで、DevClient のビルドができます。
+
+ただし、最初のビルドのみ、`--non-interactive` は使えないので、ローカルでビルドを実行する必要があります。
+
+また、DevClient をインストールするには、ビルド前にデバイス ID を追加しておく必要があります。
+
+`npx eas-cli device:create` を実行し、デバイス追加用の URL を生成し本人に共有します。
+
+その後、ローカルでデバイス ID を指定してビルドすることで、新しい開発者に DevClient を共有できます。
