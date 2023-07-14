@@ -1,5 +1,5 @@
 ---
-to: src/models/<%= model %>/screens/<%= screen_name %>/<%= screen_name %>.tsx
+to: src/features/<%= feature %>/screens/<%= screen_name %>/<%= screen_name %>.tsx
 ---
 
 import { FC } from 'react';

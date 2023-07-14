@@ -83,7 +83,7 @@ yarn install
 
 -   `src/apis`: openapi2aspida で生成した api クライアントや axion のモックなどが入っています。
 -   `src/features`: 機能/モデルごとのコンポーネントを格納しています。screen コンポーネントはこの中に配置します。
-    -   `src/features**/components`: ある機能/モデル内で用いるコンポーネントの置き場です。後述の bases, modules にさらに分かれます。
+    -   `src/features/**/components`: ある機能/モデル内で用いるコンポーネントの置き場です。後述の bases, modules にさらに分かれます。
 -   `src/components`: 機能/モデルに関わらない汎用的なコンポーネントの置き場です。
     -   `src/components/bases`: react-native 標準のコンポーネントのラッパーコンポーネントの置き場です。ComponentProps 型を用いて標準コンポーネントの props を完全に継承したものにします。
     -   `src/components/modules`: 上記に含まれない汎用的なコンポーネントの置き場です。bases と異なり、bases や 他の modules を参照することができます。
