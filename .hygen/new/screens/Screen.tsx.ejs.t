@@ -1,25 +1,16 @@
 ---
 to: src/features/<%= feature %>/screens/<%= screen_name %>/<%= screen_name %>.tsx
 ---
-
 import { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
+import { Container } from './styles';
 
 export const <%= screen_name %>: FC = () => {
     return (
-        <View style={styles.container}>
+        <Container>
             <Text>
                 <%= screen_name %>
             </Text>
-        </View>
+        </Container>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-});

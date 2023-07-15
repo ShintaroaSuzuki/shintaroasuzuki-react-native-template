@@ -7,10 +7,12 @@ import { ComponentProps, FC } from "react";
 import { FC } from "react"
 import { <%= component_name %>Props } from "./<%= component_name %>.types";
 <% } -%>
-import { StyleSheet } from "react-native";
+import * as S from './styles';
+
 
 export const <%= component_name %>: FC<> = () => {
-    return ();
+    return (
+        <S.Container>
+        </S.Container>
+    );
 };
-
-const styles = StyleSheet.create({})
