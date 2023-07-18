@@ -2,14 +2,14 @@ name: CI/CD
 on:
     push:
         branches:
-            - 'master'
+            - 'main'
             - 'staging'
             - 'production'
     pull_request:
         types:
             - 'ready_for_review'
         branches:
-            - 'master'
+            - 'main'
             - 'staging'
             - 'production'
 jobs:
