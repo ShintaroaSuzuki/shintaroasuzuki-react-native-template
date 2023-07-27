@@ -14,6 +14,7 @@ module.exports = {
     ],
     coverageReporters: [
         ['text', { file: 'coverage.txt' }],
+        ['html'],
         ['json-summary', { file: 'coverage-summary.json' }]
     ],
     coverageThreshold: {
